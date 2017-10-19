@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyTheme" parent="MyTheme.Base">
+    </style>
+
+    <style name="MyTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="MyTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="buttonStyle">@style/MyTheme.Button</item>
+    </style>
+
+    <style name="MyTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="MyTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyDrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">#F5F5F5</item>
+        <item name="spinBars">true</item>
+    </style>
+
+    <style name="MyTheme.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#fff</item>
+    </style>
+
+    <style name="TabLayoutThemes" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">#FFFFFF</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabSelectedTextColor">#212121</item>
+    </style>
+
+    <style name="LoginTextInputThemes" parent="MyTheme.Base">
+        <item name="android:textColorHint">#fff</item>
+        <item name="colorAccent">#fff</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
+</resources>
