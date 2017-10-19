@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
-                    android:theme="@style/TextInputThemes">
+                    android:theme="@style/LoginTextInputThemes" >
 
                     <AutoCompleteTextView
                         android:id="@+id/txt_login"
@@ -66,7 +66,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:theme="@style/TextInputThemes">
+                    android:theme="@style/LoginTextInputThemes" >
 
                     <EditText
                         android:id="@+id/txt_password"
@@ -75,10 +75,12 @@
                         android:hint="@string/prompt_password"
                         android:imeActionId="@+id/txt_login"
                         android:imeActionLabel="@string/action_sign_in_short"
-                        android:theme="@style/TextInputThemes"
+
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1" />
+                    <!--android:theme="@style/TextInputThemes"-->
+
 
                 </android.support.design.widget.TextInputLayout>
 
