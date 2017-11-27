@@ -6,5 +6,19 @@
     <color name="login_background">#5A00AED1</color>
     <color name="login_text_color">#3c3f41</color>
     <color name="login_elements_color">#00457c</color>
+    <color name="login_button_start_color">#aa00457c</color>
+    <color name="login_button_end_color">#5a00457c</color>
     <color name="window_background">#F5F5F5</color>
+    <color name="spinner_background_color">#00457c</color>
+    <color name="indigo">#d7d7d7</color>
+    <color name="cardview_color">#64B5F6</color>
+    <color name="cardview_color_alt">#e5097f</color>
+    <color name="vector_img_gray">#3c3f41</color>
+    <color name="arrow_green">#4CAF50</color>
+    <color name="arrow_red">#FF5722</color>
+
+    <color name="blue_swipe">@color/colorPrimary</color>
+    <color name="green_swipe">#ff99cc00</color>
+    <color name="red_swipe">#ffff4444</color>
+    <color name="orange_swipe">#ffffbb33</color>
 </resources>

@@ -4,6 +4,9 @@
     <style name="MyTheme" parent="MyTheme.Base">
     </style>
 
+    <style name="MyThemeMain" parent="MyTheme.Base">
+    </style>
+
     <style name="MyTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -18,6 +21,7 @@
         <item name="buttonStyle">@style/MyTheme.Button</item>
     </style>
 
+
     <style name="MyTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="MyTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -28,6 +32,12 @@
 
     <style name="MyTheme.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textColor">#fff</item>
+    </style>
+
+    <style name="MyTheme.Settings" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 
     <style name="TabLayoutThemes" parent="Widget.Design.TabLayout">
@@ -42,4 +52,21 @@
         <item name="android:textColor">#fff</item>
     </style>
 
+    <style name="SplashTheme" parent="MyTheme.Base">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+
+    <style name="MyCardViewStyle" parent="Theme.AppCompat.Light">
+        <item name="cardCornerRadius">6dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardMaxElevation">6dp</item>
+        <item name="contentPaddingBottom">10dp</item>
+        <item name="contentPaddingTop">10dp</item>
+        <item name="contentPaddingLeft">10dp</item>
+        <item name="contentPaddingRight">10dp</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 </resources>

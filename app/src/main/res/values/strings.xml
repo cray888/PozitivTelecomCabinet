@@ -1,42 +1,114 @@
 <resources>
-    <string name="app_name">Позитив</string>
+    <string name="app_name">Позитив телеком</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_login">Логин</string>
-    <string name="prompt_password">Пароль</string>
+    <!-- Strings settings -->
+    <string name="default_notification_channel_id" translatable="false">fcm_news</string>
+    <string name="google_map_api_key" translatable="false">AIzaSyAuxgFrPACgkY5-QFnwLZ00es-Tkjme2Kg</string>
+
+    <!-- URL -->
+    <string name="url_vk">https://vk.com/pozitivtelecom</string>
+    <string name="url_fb">https://www.facebook.com/pozitivtelecom/?pnref=story</string>
+    <string name="url_inst">https://www.instagram.com/pozitivtelecom/</string>
+    <string name="url_privacy_policy">https://pozitivtelecom.ru/privacy-policy.php</string>
+    <string name="url_internet">https://www.pozitivtelecom.ru/internet/</string>
+    <string name="url_tv">https://pozitivtelecom.ru/iptv/novyy-tv/</string>
+    <string name="url_tvn">http://video.pozitivtelecom.ru/</string>
+    <string name="url_akcii">https://pozitivtelecom.ru/</string>
+    <string name="url_po">https://lk.pozitivtelecom.ru/accounts/42/rentsoft/</string>
+
+    <!-- Strings related to all -->
+    <string name="no_internet">Нет доступа к интернету или сервер не доступен. Попробуйте позже.</string>
+    <string name="action_please_wait">Пожалуйста, подождите...</string>
+
+    <!-- Strings related to login activity -->
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="remember_password">Запомнить пароль</string>
     <string name="action_sign_in">Авторизация</string>
     <string name="action_sign_in_short">Войти</string>
-    <string name="forgot_password">Забыли пароль?</string>
-    <string name="remember_password">Запомнить пароль</string>
-    <string name="sign_up">Подключиться к \"Позитив телеком\"</string>
+    <string name="action_forgot_password">Получить пароль</string>
+    <string name="action_sign_up">Стать абонентом</string>
     <string name="error_invalid_login">Логин введнен не верно</string>
     <string name="error_invalid_password">Пароль не может быть пустым</string>
     <string name="error_incorrect_password">Пароль не верен</string>
     <string name="error_field_required">Поле обязательно для заполнения</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+
+    <!-- Strings related to forgot password activity -->
+    <string name="title_activity_forgot_password">Восставовление пароля</string>
+    <string name="forgot_password_instruction">Для восстановления пароля, необходимо ввести номер телефона указанного при подключении или номер договора.</string>
+    <string name="phone_number">Номер телефона:</string>
+    <string name="number_contract">Номер договора:</string>
+    <string name="number_image">Проверочный код:</string>
+    <string name="password_is_send">Пароль отправлен на номер указанный при подключении</string>
+    <string name="action_send_password">Отправить пароль</string>
+    <string name="error_phone_no_empty">Поле телефон или договор не заполнено</string>
+    <string name="error_capcha_no_empty">Поле не может быть пустым</string>
+
+    <!-- Strings related to signup activity -->
+    <string name="title_activity_sign_up">Стать абонентом</string>
+    <string name="title_need_connect">Хотите подключиться к нам?\nЗаполните поля и отправьте заявку</string>
+    <string name="name">Имя:</string>
+    <string name="address">Адрес:</string>
+    <string name="send_contact">Отправить заявку</string>
+    <string name="accept_personal_data"><![CDATA[Отправляя заявку, я даю согласие на <u>обработку персональных данных</u>]]></string>
+
+    <!-- Strings related to main activity -->
     <string name="title_activity_main">Позитив телеком</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="account">Лицевой счет:</string>
+    <string name="balance">Баланс:</string>
+    <string name="valuta"> руб.</string>
+    <string name="navigation_drawer_open">Открыть навигационную панель</string>
+    <string name="navigation_drawer_close">Закрыть навигационную панель</string>
+    <string name="action_press_to_exit">Нажмите еще раз \"Назад\" для выхода</string>
     <string name="action_settings">Настройки</string>
+
+    <!-- Strings related to main fragment -->
+    <string name="main_fragment_account_number"><![CDATA[<u>Лицевой счет № %s</u>]]></string>
+    <string name="main_fragment_balance">Баланс</string>
+    <string name="main_fragment_periond_start">Расчетный период начался</string>
+    <string name="main_fragment_period_end">Расчетный период завершится</string>
+    <string name="main_fragment_sum_next_mouth">Стоимость следующего месяца</string>
+    <string name="main_fragment_internet">Интернет</string>
+    <string name="main_fragment_tv">Телевидение</string>
+    <string name="main_fragment_tvn">Видеонаблюдение</string>
+    <string name="main_fragment_akcii">Акции</string>
+    <string name="main_fragment_pay">Оплата услуг</string>
+    <string name="main_fragment_po">Полезное ПО</string>
+
+    <!-- Strings related to pay activity -->
+    <string name="title_activity_pay">Оплата услуг</string>
+    <string name="conract_number">Номер договора:</string>
+    <string name="summ_pay">Сумма платежа:</string>
+    <string name="action_yandex_money">Со счета в Яндекс.Деньгах</string>
+    <string name="action_terminal_code">По коду через терминал</string>
+    <string name="action_debit_card">С банковской карты</string>
+    <string name="error_required_contract">Номер договора не заполнен</string>
+    <string name="error_required_summ">Сумма платежа не заполнена</string>
+    <string name="error_incorrect_summ">Сумма платежа должна быть больше нуля</string>
+    <string name="error_load_provider_site">Ошибка загрузки сайта платежной системы</string>
+
+    <!-- Strings related to message activity -->
+    <string name="title_activity_message">Служба поддрежки</string>
+
+    <!-- Strings related to map activity -->
+    <string name="title_activity_map">Карта</string>
+
+    <!-- Strings related to map activity -->
+    <string name="title_activity_history_pay">Детализация платежей и списаний</string>
+
+    <!-- Strings related to about fragment -->
+    <string name="about_text">Телефон: (3452) 51-44-51\nГрафик работы: круглосуточно\nТехническая поддержка: круглосуточно\nАбонентский отдел: ежедневно с 10:00 - 22:00</string>
+    <string name="about_social">Мы в социальных сетях:</string>
+
+    <!-- Strings related to settings activity -->
     <string name="title_activity_settings">Настройки</string>
-
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
     <string name="pref_header_general">Общие</string>
-
     <string name="pref_title_social_recommendations">Enable social recommendations</string>
     <string name="pref_description_social_recommendations">Recommendations for people to contact
         based on your message history
     </string>
-
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">John Smith</string>
-
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string-array name="pref_example_list_titles">
         <item>Always</item>
@@ -48,10 +120,7 @@
         <item>0</item>
         <item>-1</item>
     </string-array>
-
-    <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Данные и синхронизация</string>
-
     <string name="pref_title_sync_frequency">Sync frequency</string>
     <string-array name="pref_sync_frequency_titles">
         <item>15 minutes</item>
@@ -69,30 +138,28 @@
         <item>360</item>
         <item>-1</item>
     </string-array>
-
     <string-array name="list_preference_entries">
         <item>Entry 1</item>
         <item>Entry 2</item>
         <item>Entry 3</item>
     </string-array>
-
     <string-array name="list_preference_entry_values">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
-
     <string-array name="multi_select_list_preference_default_value" />
-
     <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Уведомления</string>
-
     <string name="pref_title_new_message_notifications">New message notifications</string>
-
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
-
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="payment_methods">Выберите способ пополнения счета</string>
+    <string name="promised_payment">Обещанный платеж</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

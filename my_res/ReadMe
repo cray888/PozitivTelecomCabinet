@@ -1,0 +1,86 @@
+        /*mWebVuew = (WebView) findViewById(R.id.webView);
+        mWebVuew.getSettings().setJavaScriptEnabled(true);
+        mWebVuew.getSettings().setUserAgentString("Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25");
+        mWebVuew.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed(); // Ignore SSL certificate errors
+            }
+        });*/
+
+        //openCabinet();
+
+/*private void openCabinet() {
+        AsyncHttpClient client = new AsyncHttpClient(true, 80, 443);
+        client.get("https://lk.pozitivtelecom.ru", new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                // called before request is started
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                // called when response HTTP status is "200 OK"
+                String strResponse = "";
+                try {
+                    strResponse = new String(response, "UTF-8");
+                    strResponse = strResponse.replace("<!DOCTYPE html>", "");
+                    if (strResponse.indexOf("<html>") == -1)
+                        strResponse = "<html>" + strResponse + "</html>";
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                Document doc = null;
+                try {
+                    doc = DocumentBuilderFactory.newInstance()
+                            .newDocumentBuilder().parse(new InputSource(new StringReader(strResponse)));
+                } catch (SAXException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ParserConfigurationException e) {
+                    e.printStackTrace();
+                }
+
+                XPathExpression xpath = null;
+                try {
+                    xpath = XPathFactory.newInstance()
+                            .newXPath().compile("//input[@name='authenticity_token']/@value");
+                } catch (XPathExpressionException e) {
+                    e.printStackTrace();
+                }
+
+                String result = null;
+                try {
+                    result = (String) xpath.evaluate(doc, XPathConstants.STRING);
+                } catch (XPathExpressionException e) {
+                    e.printStackTrace();
+                }
+
+                String strCoocie = headers[9].toString().replace("Set-Cookie: ", "");
+                CookieManager cookieManager = CookieManager.getInstance();
+                cookieManager.setAcceptCookie(true);
+                cookieManager.setCookie("https://lk.pozitivtelecom.ru", strCoocie);
+                String cooc = cookieManager.getCookie("https://lk.pozitivtelecom.ru");
+
+                //String postData = "user[login]=" + Base64.encode(new String("9199502587").getBytes(), Base64.DEFAULT) + "&user[password]=" + Base64.encode(new String("31492061").getBytes(), Base64.DEFAULT) + "&authenticity_token=" + result;
+                String postData = "user[login]=9199502587&user[password]=3149206&authenticity_token=" + result;
+
+                //mWebVuew.postUrl("http://1c.pozitivtelecom.ru:81/1.php", postData.getBytes());
+                //mWebVuew.postUrl("https://lk.pozitivtelecom.ru/login", postData.getBytes());
+                mWebVuew.loadUrl("https://lk.pozitivtelecom.ru:8010/");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+            }
+
+            @Override
+            public void onRetry(int retryNo) {
+                // called when request is retried
+            }
+        });
+    }*/
