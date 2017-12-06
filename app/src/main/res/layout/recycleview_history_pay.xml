@@ -10,8 +10,8 @@
         android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="4dp"
         card_view:cardElevation="2dp"
+        card_view:cardCornerRadius="4dp"
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
@@ -50,7 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
-                        android:text="Comment text"
+                        android:text="Comment"
                         android:textColor="#333333"
                         android:textSize="12sp"/>
                 </LinearLayout>

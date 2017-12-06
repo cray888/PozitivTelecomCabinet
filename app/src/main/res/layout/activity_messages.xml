@@ -46,12 +46,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Сообщение"
-                android:inputType="text|textAutoCorrect|textMultiLine"
+                android:inputType="text|textAutoCorrect|textAutoComplete|textCapSentences|textMultiLine"
                 android:maxLines="3" />
 
         </LinearLayout>
 
         <ImageButton
+            android:id="@+id/btn_send_message"
             android:layout_width="70dp"
             android:layout_height="match_parent"
             app:srcCompat="@drawable/ic_send_black_24dp" />

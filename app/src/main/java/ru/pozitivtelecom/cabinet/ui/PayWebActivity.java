@@ -122,7 +122,12 @@ public class PayWebActivity extends AppCompatActivity {
     }
 
     private boolean checkURL(String url) {
-        if ((url.indexOf("https://lk.pozitivtelecom.ru/") != -1) || (url.indexOf("https://pozitivtelecom.ru/") != -1) || (url.indexOf("http://pozitivtelecom.ru/") != -1)) {
+        if (
+                (url.indexOf("https://lk.pozitivtelecom.ru/") != -1)
+                || (url.indexOf("https://pozitivtelecom.ru/") != -1)
+                || (url.indexOf("http://pozitivtelecom.ru/") != -1)
+                || url == "https://lk.pozitivtelecom.ru:8010/"
+           ) {
             if (!isClosed) {
                 setResult(RESULT_OK);
                 finish();

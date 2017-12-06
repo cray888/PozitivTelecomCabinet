@@ -12,13 +12,13 @@ import java.util.List;
 
 import ru.pozitivtelecom.cabinet.R;
 import ru.pozitivtelecom.cabinet.app.ApplicationClass;
-import ru.pozitivtelecom.cabinet.models.AccountItemModel;
-import ru.pozitivtelecom.cabinet.models.AccountsDataModel;
-import ru.pozitivtelecom.cabinet.models.UsersDataModel;
+import ru.pozitivtelecom.cabinet.models.SpinnerAccountModel;
+import ru.pozitivtelecom.cabinet.models.AccountsModel;
+import ru.pozitivtelecom.cabinet.models.UserModel;
 
 public class AccountsSpinnerAdapter extends BaseAdapter {
     private Activity mContext;
-    private List<AccountItemModel> mItems;
+    private List<SpinnerAccountModel> mItems;
 
     public AccountsSpinnerAdapter(Activity context)
     {
@@ -26,12 +26,11 @@ public class AccountsSpinnerAdapter extends BaseAdapter {
         UpdateAdapter();
     }
 
-    public void UpdateAdapter()
-    {
+    public void UpdateAdapter() {
         mItems = new ArrayList<>();
-        for (UsersDataModel user: ApplicationClass.getAppData(mContext).Users) {
-            for (AccountsDataModel account : user.Accounts) {
-                mItems.add(new AccountItemModel(account.AccountID, account.AccountNO, account.Balance, account.Overdraft, account.OverdraftEnd, account.RecommendedPay));
+        for (UserModel user: ApplicationClass.getAppData(mContext).Users) {
+            for (AccountsModel account : user.Accounts) {
+                mItems.add(new SpinnerAccountModel(account.AccountID, account.AccountNO, account.Balance, account.Overdraft, account.OverdraftEnd, account.RecommendedPay));
             }
         }
     }
@@ -54,7 +53,7 @@ public class AccountsSpinnerAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
         LinearLayout view = convertView == null ? (LinearLayout)mContext.getLayoutInflater().inflate(R.layout.custom_spinner_items, viewGroup, false) : (LinearLayout)convertView;
-        AccountItemModel curentItem = mItems.get(i);
+        SpinnerAccountModel curentItem = mItems.get(i);
         TextView accountNo = view.findViewById(R.id.txt_accountNo);
         accountNo.setText(curentItem.AccountNO);
         TextView accountDesc = view.findViewById(R.id.txt_accountDesc);
@@ -62,7 +61,7 @@ public class AccountsSpinnerAdapter extends BaseAdapter {
         return view;
     }
 
-    public AccountItemModel getListItem(int i)
+    public SpinnerAccountModel getListItem(int i)
     {
         return mItems.get(i);
     }

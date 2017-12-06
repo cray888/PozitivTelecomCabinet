@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,9 +24,10 @@ import java.util.Map;
 
 import br.com.sapereaude.maskedEditText.MaskedEditText;
 import ru.pozitivtelecom.cabinet.R;
-import ru.pozitivtelecom.cabinet.models.Capcha;
+import ru.pozitivtelecom.cabinet.models.CapchaModel;
+import ru.pozitivtelecom.cabinet.models.MainModel;
 import ru.pozitivtelecom.cabinet.soap.OnSoapEventListener;
-import ru.pozitivtelecom.cabinet.soap.SoapCalss;
+import ru.pozitivtelecom.cabinet.soap.SoapClass;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
@@ -33,7 +35,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private LinearLayout mMainView;
     private Toolbar mToolbar;
     private MaskedEditText mPhone;
-    private EditText mContract, mCapcha;
+    private EditText mAccount, mCapcha;
     private ImageView mCapchaImg;
     private Button mSendPassword;
     private ProgressDialog mProgressDialog;
@@ -68,7 +70,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         mAlertDialog = new AlertDialog.Builder(this);
 
         mPhone = findViewById(R.id.etxt_phone_number);
-        mContract = findViewById(R.id.etxt_contract_number);
+        mAccount = findViewById(R.id.etxt_account_number);
         mCapcha = findViewById(R.id.etxt_capcha_number);
 
         mSendPassword = findViewById(R.id.btn_send_password);
@@ -84,23 +86,36 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void getCapcha() {
         mCapcha.setText("");
         mProgressDialog.show();
         Map<String, String> mProperty = new HashMap<>();
         mProperty.put("token", "");
-        mProperty.put("command", "GetCapcha");
+        mProperty.put("command", "Capcha");
         mProperty.put("data", "");
 
-        SoapCalss soap = new SoapCalss("GetData", mProperty);
+        SoapClass soap = new SoapClass("GetData", mProperty);
         soap.setSoapEventListener(new OnSoapEventListener() {
             @Override
             public void onChangeState(int state, String message) {
             }
 
             @Override
-            public void onComplite(String Result) {
-                Capcha soapResult = new Gson().fromJson(Result, Capcha.class);
+            public void onComplete(String Result) {
+                CapchaModel soapResult = new Gson().fromJson(Result, CapchaModel.class);
                 mCapchaUID = soapResult.UID;
                 byte[] decodedString = Base64.decode(soapResult.Image, Base64.DEFAULT);
                 final Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -125,16 +140,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         boolean isCancel = false;
 
         String phone = mPhone.getRawText();
-        String contract = mContract.getText().toString();
+        String account = mAccount.getText().toString();
         String capcha = mCapcha.getText().toString();
 
         mPhone.setError(null);
-        mContract.setError(null);
+        mAccount.setError(null);
         mCapcha.setError(null);
 
 
-        if (TextUtils.isEmpty(phone) && TextUtils.isEmpty(contract)) {
-            mPhone.setError(getString(R.string.error_phone_no_empty));
+        if (TextUtils.isEmpty(phone) && TextUtils.isEmpty(account)) {
+            mPhone.setError(getString(R.string.error_phone_or_contract_no_empty));
             isCancel = true;
         }
 
@@ -145,35 +160,35 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         if (isCancel) return;
 
-        sendData(phone, contract, capcha);
+        sendData(phone, account, capcha);
     }
 
-    private void sendData(String phone, String contract, String capcha) {
+    private void sendData(String phone, String account, String capcha) {
         mProgressDialog.show();
         Map<String, String> mData = new HashMap<>();
         mData.put("CapchaUID", mCapchaUID);
         mData.put("CapchaValue", capcha);
         mData.put("Phone", phone);
-        mData.put("Contract", contract);
+        mData.put("Account", account);
 
         Map<String, String> mProperty = new HashMap<>();
         mProperty.put("token", "");
         mProperty.put("command", "ForgotPassword");
         mProperty.put("data", new Gson().toJson(mData));
 
-        SoapCalss soap = new SoapCalss("PutData", mProperty);
+        SoapClass soap = new SoapClass("PutData", mProperty);
         soap.setSoapEventListener(new OnSoapEventListener() {
             @Override
             public void onChangeState(int state, String message) {
             }
 
             @Override
-            public void onComplite(String Result) {
-                SoapResultForgotPassword soapResult = new Gson().fromJson(Result, SoapResultForgotPassword.class);
-                if (soapResult.Error) {
-                    showDialog(soapResult.Message, false);
+            public void onComplete(String Result) {
+                MainModel resultClass = new Gson().fromJson(Result, MainModel.class);
+                if (resultClass.Error) {
+                    showDialog(resultClass.Message, false);
                 } else {
-                    showDialog(soapResult.Message, true);
+                    showDialog(resultClass.Message, true);
                 }
             }
 
@@ -204,9 +219,4 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             }
         });
     }
-}
-
-class SoapResultForgotPassword {
-    public boolean Error;
-    public String Message;
 }

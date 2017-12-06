@@ -17,51 +17,43 @@ public class PreferencesClass {
 
     public static PreferencesClass Preferences = new PreferencesClass();
 
-    public void InitPreferences(Context context)
-    {
+    public void InitPreferences(Context context) {
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     /////////////////////////////
-    public void SetPreferences(String key, String value)
-    {
+    public void SetPreferences(String key, String value) {
         SharedPreferences.Editor mPerfsEditor = mPrefs.edit();
         mPerfsEditor.putString(key, value);
         mPerfsEditor.apply();
     }
 
-    public void SetPreferences(String key, boolean value)
-    {
+    public void SetPreferences(String key, boolean value) {
         SharedPreferences.Editor mPerfsEditor = mPrefs.edit();
         mPerfsEditor.putBoolean(key, value);
         mPerfsEditor.apply();
     }
 
-    public void SetPreferences(String key, int value)
-    {
+    public void SetPreferences(String key, int value) {
         SharedPreferences.Editor mPerfsEditor = mPrefs.edit();
         mPerfsEditor.putInt(key, value);
         mPerfsEditor.apply();
     }
 
     /////////////////////////////
-    public String GetPreferences(String key, String defValue)
-    {
+    public String GetPreferences(String key, String defValue) {
         return mPrefs.getString(key, defValue);
     }
 
-    public boolean GetPreferences(String key, boolean defValue)
-    {
+    public boolean GetPreferences(String key, boolean defValue) {
         return mPrefs.getBoolean(key, defValue);
     }
 
-    public int GetPreferences(String key, int defValue)
-    {
+    public int GetPreferences(String key, int defValue) {
         return mPrefs.getInt(key, defValue);
     }
 
-    public static Map<String, String> GetDeviceInfo(Context context)
-    {
+    public static Map<String, String> GetDeviceInfo(Context context) {
         Map<String, String> Result = new HashMap<>();
 
         Result.put("FirebaseID", FirebaseInstanceId.getInstance().getToken());

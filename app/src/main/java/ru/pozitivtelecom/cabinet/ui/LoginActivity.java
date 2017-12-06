@@ -28,18 +28,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.pozitivtelecom.cabinet.app.ApplicationClass;
-import ru.pozitivtelecom.cabinet.models.UsersCabinetDataModel;
-import ru.pozitivtelecom.cabinet.soap.JsonClass;
+import ru.pozitivtelecom.cabinet.models.MainModel;
+import ru.pozitivtelecom.cabinet.models.PersonModel;
 import ru.pozitivtelecom.cabinet.soap.OnSoapEventListener;
 import ru.pozitivtelecom.cabinet.app.PreferencesClass;
 import ru.pozitivtelecom.cabinet.R;
-import ru.pozitivtelecom.cabinet.soap.SoapCalss;
+import ru.pozitivtelecom.cabinet.soap.SoapClass;
 
 public class LoginActivity extends AppCompatActivity {
 
     // private references.
     private boolean mFirstInputPassword = false;
-    //private AuthDataModel authData;
+    private SoapClass mSoap;
 
     // UI references.
     private RelativeLayout mMainView;
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
-
+                mSoap = null;
             }
         });
 
@@ -219,23 +219,23 @@ public class LoginActivity extends AppCompatActivity {
         mProperty.put("password", password);
         mProperty.put("data", mDataString);
 
-        SoapCalss authorization = new SoapCalss("Authorization", mProperty);
-        authorization.setSoapEventListener(new OnSoapEventListener() {
+        SoapClass mSoap = new SoapClass("Authorization", mProperty);
+        mSoap.setSoapEventListener(new OnSoapEventListener() {
             @Override
             public void onChangeState(int state, String message) {
 
             }
 
             @Override
-            public void onComplite(String Result) {
+            public void onComplete(String Result) {
                 mProgressDialog.dismiss();
 
                 PreferencesClass.Preferences.SetPreferences("rememberpassword", mRememberMe.isChecked());
 
-                final Map<String,Object> RsultMap = JsonClass.json2map(Result);
+                final MainModel resultClass = new Gson().fromJson(Result, MainModel.class);
 
-                if ((Boolean)RsultMap.get("Allowed") == true) {
-                    ApplicationClass.setAppData(LoginActivity.this, new Gson().fromJson(new Gson().toJson(RsultMap.get("Data")), UsersCabinetDataModel.class));
+                if (!resultClass.Error) {
+                    ApplicationClass.setAppData(LoginActivity.this, new Gson().fromJson(new Gson().toJson(resultClass.Data), PersonModel.class));
                     if (mRememberMe.isChecked() == true) {
                         String Token = ApplicationClass.getAppData(LoginActivity.this).Token;
                         PreferencesClass.Preferences.SetPreferences("login", mLoginView.getText().toString());
@@ -250,7 +250,7 @@ public class LoginActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Snackbar.make(mMainView, RsultMap.get("Message").toString(), Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(mMainView, resultClass.Message.toString(), Snackbar.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -267,7 +267,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
-        authorization.execute();
+        mSoap.execute();
     }
 
     private boolean isLoginValid(String login) {

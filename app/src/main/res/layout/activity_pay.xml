@@ -132,7 +132,8 @@
                     android:gravity="center"
                     android:text="@string/promised_payment"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

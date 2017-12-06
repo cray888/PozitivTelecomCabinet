@@ -1,6 +1,6 @@
 package ru.pozitivtelecom.cabinet.models;
 
-public class AccountsDataModel {
+public class AccountsModel {
     public int AccountID;
     public String AccountNO;
     public float Balance;

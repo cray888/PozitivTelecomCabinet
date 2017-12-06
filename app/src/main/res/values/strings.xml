@@ -3,6 +3,7 @@
 
     <!-- Strings settings -->
     <string name="default_notification_channel_id" translatable="false">fcm_news</string>
+    <string name="default_notification_channel_name" translatable="false">fcm_news</string>
     <string name="google_map_api_key" translatable="false">AIzaSyAuxgFrPACgkY5-QFnwLZ00es-Tkjme2Kg</string>
 
     <!-- URL -->
@@ -41,7 +42,7 @@
     <string name="number_image">Проверочный код:</string>
     <string name="password_is_send">Пароль отправлен на номер указанный при подключении</string>
     <string name="action_send_password">Отправить пароль</string>
-    <string name="error_phone_no_empty">Поле телефон или договор не заполнено</string>
+    <string name="error_phone_or_contract_no_empty">Поле телефон или договор не заполнено</string>
     <string name="error_capcha_no_empty">Поле не может быть пустым</string>
 
     <!-- Strings related to signup activity -->
@@ -79,6 +80,8 @@
     <string name="title_activity_pay">Оплата услуг</string>
     <string name="conract_number">Номер договора:</string>
     <string name="summ_pay">Сумма платежа:</string>
+    <string name="payment_methods">Выберите способ пополнения счета</string>
+    <string name="promised_payment">Обещанный платеж</string>
     <string name="action_yandex_money">Со счета в Яндекс.Деньгах</string>
     <string name="action_terminal_code">По коду через терминал</string>
     <string name="action_debit_card">С банковской карты</string>
@@ -93,7 +96,7 @@
     <!-- Strings related to map activity -->
     <string name="title_activity_map">Карта</string>
 
-    <!-- Strings related to map activity -->
+    <!-- Strings related to history pay activity -->
     <string name="title_activity_history_pay">Детализация платежей и списаний</string>
 
     <!-- Strings related to about fragment -->
@@ -155,11 +158,12 @@
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="payment_methods">Выберите способ пополнения счета</string>
-    <string name="promised_payment">Обещанный платеж</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="connect_tarif_service">Подключить</string>
+    <string name="cancel">Отмена</string>
 
 
 </resources>

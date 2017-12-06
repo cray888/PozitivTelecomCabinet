@@ -1,12 +1,8 @@
 package ru.pozitivtelecom.cabinet.ui;
 
-import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -22,36 +18,32 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.internal.framed.Variant;
 import ru.pozitivtelecom.cabinet.R;
 import ru.pozitivtelecom.cabinet.adapters.HistoryPayAdapter;
 import ru.pozitivtelecom.cabinet.app.ApplicationClass;
 import ru.pozitivtelecom.cabinet.app.PreferencesClass;
-import ru.pozitivtelecom.cabinet.models.HistoryPayItemModel;
-import ru.pozitivtelecom.cabinet.models.UsersCabinetDataModel;
-import ru.pozitivtelecom.cabinet.soap.JsonClass;
+import ru.pozitivtelecom.cabinet.models.HistoryPayModel;
+import ru.pozitivtelecom.cabinet.models.MainModel;
 import ru.pozitivtelecom.cabinet.soap.OnSoapEventListener;
-import ru.pozitivtelecom.cabinet.soap.SoapCalss;
+import ru.pozitivtelecom.cabinet.soap.SoapClass;
 
 public class HistoryPayActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     //private reference
     private LinearLayoutManager mLayoutManager;
-    private List<HistoryPayItemModel> mPaysList;
-    private Type itemsListType = new TypeToken<List<HistoryPayItemModel>>(){}.getType();
+    private List<HistoryPayModel> mPaysList;
+    private Type itemsListType = new TypeToken<List<HistoryPayModel>>(){}.getType();
     private HistoryPayAdapter mAdapter;
     private Calendar mCalendarBegin, mCalendarEnd;
     private boolean currentCalendarIsBegin;
@@ -121,15 +113,12 @@ public class HistoryPayActivity extends AppCompatActivity implements View.OnClic
         mCalendarEnd.set(Calendar.DAY_OF_MONTH, mCalendarEnd.getActualMaximum(Calendar.DAY_OF_MONTH));
         setInitialDateTime(mDateEnd, mCalendarEnd);
 
-        mPaysList = new ArrayList<>();
-        mAdapter = new HistoryPayAdapter(HistoryPayActivity.this, mPaysList);
-        mRecyclerView.setAdapter(mAdapter);
         UpdateList();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.history_pay, menu);
+        getMenuInflater().inflate(R.menu.history_pays, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -165,29 +154,39 @@ public class HistoryPayActivity extends AppCompatActivity implements View.OnClic
 
         Map<String, String> mProperty = new HashMap<>();
         mProperty.put("token", token);
-        mProperty.put("command", "GetHistoryPay");
+        mProperty.put("command", "HistoryPay");
         mProperty.put("data", mDataString);
 
-        SoapCalss soapObject = new SoapCalss("GetData", mProperty);
+        SoapClass soapObject = new SoapClass("GetData", mProperty);
         soapObject.setSoapEventListener(new OnSoapEventListener() {
             @Override
             public void onChangeState(int state, String message) {}
 
             @Override
-            public void onComplite(String Result) {
+            public void onComplete(String Result) {
                 mProgressDialog.dismiss();
 
-                Map<String, Object> MapResult = JsonClass.json2map(Result);
+                final MainModel resultClass = new Gson().fromJson(Result, MainModel.class);
 
-                mPaysList = new Gson().fromJson(new Gson().toJson(MapResult.get("Data")), itemsListType);
-                mAdapter = new HistoryPayAdapter(HistoryPayActivity.this, mPaysList);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRecyclerView.setAdapter(mAdapter);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
+                if (!resultClass.Error) {
+                    mPaysList = new Gson().fromJson(new Gson().toJson(resultClass.Data), itemsListType);
+                    mAdapter = new HistoryPayAdapter(HistoryPayActivity.this, mPaysList);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRecyclerView.setAdapter(mAdapter);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+                else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Snackbar.make(mMainView, resultClass.Message, Snackbar.LENGTH_LONG).show();
+                        }
+                    });
+                }
             }
 
             @Override

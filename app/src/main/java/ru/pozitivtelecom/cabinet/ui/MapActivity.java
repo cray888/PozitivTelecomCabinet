@@ -2,7 +2,6 @@ package ru.pozitivtelecom.cabinet.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.SupportActionModeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -10,14 +9,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.TileProvider;
 
-import cz.msebera.android.httpclient.client.cache.Resource;
 import ru.pozitivtelecom.cabinet.R;
+import ru.pozitivtelecom.cabinet.adapters.PopupMapAdapter;
 import ru.pozitivtelecom.cabinet.map.OnlineTileProvider;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnCameraIdleListener, GoogleMap.OnMapLongClickListener {
@@ -61,8 +60,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-        TileProvider provider = new OnlineTileProvider("http://tile.tgt72.ru/%d/%d/%d.png");
-        //TileProvider provider = new OnlineTileProvider("http://a.tile.openstreetmap.org/%d/%d/%d.png");
+        //TileProvider provider = new OnlineTileProvider("http://tile.tgt72.ru/%d/%d/%d.png");
+        TileProvider provider = new OnlineTileProvider("http://a.tile.openstreetmap.org/%d/%d/%d.png");
         if (provider != null) {
             mMap.setMapType(0);
             mMap.addTileOverlay(new TileOverlayOptions().tileProvider(provider));
@@ -72,21 +71,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnCameraIdleListener(this);
+        mMap.setInfoWindowAdapter(new PopupMapAdapter(getLayoutInflater())); //https://stackoverflow.com/questions/13904651/android-google-maps-v2-how-to-add-marker-with-multiline-snippet
 
         LatLng latLng = new LatLng(57.107648, 65.586107);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Позитив Телеком"));
+        mMap.addMarker(new MarkerOptions().position(latLng).title("ООО \"Позитив Телеком\"").snippet(
+                "Телефон: (3452) 51-44-51\n" +
+                "График работы: круглосуточно\n" +
+                "Техническая поддержка: круглосуточно\n" +
+                "Абонентский отдел: ежедневно с 10:00 - 22:00").icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher_round)));
 
         map.setMapType(GoogleMap.MAP_TYPE_NONE);
     }
 
     @Override
-    public void onMapClick(LatLng latLng) {
+    public void onCameraIdle() {
 
     }
 
     @Override
-    public void onCameraIdle() {
+    public void onMapClick(LatLng latLng) {
 
     }
 

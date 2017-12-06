@@ -1,25 +1,24 @@
 package ru.pozitivtelecom.cabinet.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.AttributeSet;
-import android.view.View;
-import android.support.design.widget.NavigationView;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,26 +29,29 @@ import com.wooplr.spotlight.SpotlightView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
 
 import ru.pozitivtelecom.cabinet.R;
 import ru.pozitivtelecom.cabinet.adapters.AccountsSpinnerAdapter;
 import ru.pozitivtelecom.cabinet.app.ApplicationClass;
 import ru.pozitivtelecom.cabinet.app.PreferencesClass;
+import ru.pozitivtelecom.cabinet.task.AppTaskTimer;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    //Private references
+    private AccountsSpinnerAdapter spinnerAdapter;
+    private Map<Integer, Fragment> mFragmentMap = new HashMap<>();
+    private BroadcastReceiver mMessageReceiver;
+    private Timer mTimer;
+    private AppTaskTimer mAppTaskTimer;
 
-    //UI
+    //Public references
+
+    //UI references
     private DrawerLayout mDrawer;
     private Snackbar mSnackbarExit;
-    private FloatingActionButton fab;
-
-    //Public variable
-
-    //Private variable
-    //private int mCurentAccountID = 0;
-    private AccountsSpinnerAdapter spinnerAdapter;
-    private Map <Integer, Fragment> mFragmentMap = new HashMap<>();
+    private FloatingActionButton mFab;
+    private Spinner mSpinnerAccounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +75,14 @@ public class MainActivity extends AppCompatActivity
 
         mSnackbarExit = Snackbar.make(findViewById(R.id.mainView), R.string.action_press_to_exit, Snackbar.LENGTH_SHORT);
 
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
-        fab.setVisibility(View.INVISIBLE);
+        mFab.setVisibility(View.INVISIBLE);
 
         LinearLayout mHeaderNav = headerLayout.findViewById(R.id.head_nav);
         mHeaderNav.setPadding(
@@ -107,34 +109,44 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        Spinner mSpinnerAccounts = headerLayout.findViewById(R.id.spnr_accounts);
+        mSpinnerAccounts = headerLayout.findViewById(R.id.spnr_accounts);
         mSpinnerAccounts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ((ApplicationClass)getApplication()).CurrentAccount = i;
+                ((ApplicationClass) getApplication()).CurrentAccountID = i;
                 ApplicationClass.setCurrentAccount(MainActivity.this, i);
+                LocalBroadcastManager.getInstance(MainActivity.this).sendBroadcast(new Intent("UpdateMainFragmentData"));
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
+
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        navigationView.getMenu().getItem(0).setChecked(true);
+
         spinnerAdapter = new AccountsSpinnerAdapter(this);
         mSpinnerAccounts.setAdapter(spinnerAdapter);
+        UpdateSpinner();
 
-        navigationView.getMenu().getItem(0).setChecked(true);
-        Fragment fragment = MainFragment.newInstance();
-        mFragmentMap.put(R.id.nav_home, fragment);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-        setTitle(navigationView.getMenu().getItem(0).getTitle());
+        mMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                UpdateSpinner();
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("UpdateMainActivitySpinner"));
+
+        if (mTimer != null) mTimer.cancel();
+        mTimer = new Timer();
+        mAppTaskTimer = new AppTaskTimer(this);
+        mTimer.schedule(mAppTaskTimer, 60000, 60000);
     }
 
     @Override
-    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-        return super.onCreateView(parent, name, context, attrs);
-
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 
     @Override
@@ -145,12 +157,6 @@ public class MainActivity extends AppCompatActivity
             if (mSnackbarExit.isShown()) super.onBackPressed();
             else mSnackbarExit.show();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     @Override
@@ -172,12 +178,8 @@ public class MainActivity extends AppCompatActivity
         boolean changeFragment = true;
         boolean newFragment = false;
 
-        switch (itemID)
-        {
+        switch (itemID) {
             case R.id.nav_home:
-                /*Intent intent_map = new Intent(this, MapActivity.class);
-                startActivity(intent_map);
-                changeFragment = false;*/
                 if (fragment == null) {
                     fragment = MainFragment.newInstance();
                     newFragment = true;
@@ -197,27 +199,48 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent_logout);
                 changeFragment = false;
                 break;
+            case R.id.nav_address:
+                Intent intent_map = new Intent(this, MapActivity.class);
+                startActivity(intent_map);
+                changeFragment = false;
+                break;
+            case R.id.nav_chat:
+                Intent intent_char = new Intent(this, MessagesActivity.class);
+                startActivity(intent_char);
+                changeFragment = false;
+                break;
+            case R.id.nav_tariffs:
+                if (fragment == null) {
+                    fragment = TariffServiceFragment.newInstance(1);
+                    newFragment = true;
+                }
+                break;
+            case R.id.nav_service:
+                if (fragment == null) {
+                    fragment = TariffServiceFragment.newInstance(2);
+                    newFragment = true;
+                }
+                break;
             default:
-                fragment = BlankFragment.newInstance("","");
+                fragment = BlankFragment.newInstance("", "");
         }
 
         if (changeFragment) {
             if (newFragment) mFragmentMap.put(itemID, fragment);
 
-            // Insert the fragment by replacing any existing fragment
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
-            // Highlight the selected item has been done by NavigationView
-            //item.setChecked(true);
-            // Set action bar title
             setTitle(item.getTitle());
         }
 
-
-        // Close the navigation mDrawer
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void UpdateSpinner() {
+        spinnerAdapter.UpdateAdapter();
+        spinnerAdapter.notifyDataSetChanged();
     }
 
     public int getStatusBarHeight() {
@@ -230,18 +253,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
         return result;
-    }
-
-    public void showLoadingDialog() {
-
-    }
-
-    public void hideLoadingDialog() {
-
-    }
-
-    private void openPayPage() {
-
     }
 
     private void showHelp(View view, String uid, String title, String text) {

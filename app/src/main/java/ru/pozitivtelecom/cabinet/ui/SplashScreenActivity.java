@@ -4,19 +4,18 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import ru.pozitivtelecom.cabinet.app.ApplicationClass;
-import ru.pozitivtelecom.cabinet.models.UsersCabinetDataModel;
-import ru.pozitivtelecom.cabinet.soap.JsonClass;
+import ru.pozitivtelecom.cabinet.models.MainModel;
+import ru.pozitivtelecom.cabinet.models.PersonModel;
 import ru.pozitivtelecom.cabinet.soap.OnSoapEventListener;
 import ru.pozitivtelecom.cabinet.app.PreferencesClass;
 import ru.pozitivtelecom.cabinet.R;
-import ru.pozitivtelecom.cabinet.soap.SoapCalss;
+import ru.pozitivtelecom.cabinet.soap.SoapClass;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -41,21 +40,22 @@ public class SplashScreenActivity extends AppCompatActivity {
         mProperty.put("token", token);
         mProperty.put("data", mDataString);
 
-        SoapCalss authentication = new SoapCalss("Authentication", mProperty);
+        SoapClass authentication = new SoapClass("Authentication", mProperty);
         authentication.setSoapEventListener(new OnSoapEventListener() {
             @Override
             public void onChangeState(int state, String message) {}
 
             @Override
-            public void onComplite(String Result) {
-                Map<String, Object> MapResult = JsonClass.json2map(Result);
-                ApplicationClass.setAppData(SplashScreenActivity.this, new Gson().fromJson(new Gson().toJson(MapResult.get("Data")), UsersCabinetDataModel.class));
+            public void onComplete(String Result) {
+                final MainModel resultClass = new Gson().fromJson(Result, MainModel.class);
 
-                if ((boolean)MapResult.get("Allowed")) {
+                ApplicationClass.setAppData(SplashScreenActivity.this, new Gson().fromJson(new Gson().toJson(resultClass.Data), PersonModel.class));
+
+                if (!resultClass.Error) {
                     startMainActivity();
                 } else {
                     PreferencesClass.Preferences.SetPreferences("token", "");
-                    startLoginActiviry((String)MapResult.get("Message"));
+                    startLoginActiviry(resultClass.Message);
                 }
             }
 

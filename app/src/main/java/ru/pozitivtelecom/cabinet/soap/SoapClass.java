@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SoapCalss extends AsyncTask<Void, Void, String> {
+public class SoapClass extends AsyncTask<Void, Void, String> {
 
     // private references.
     private String mMethodName;
@@ -35,7 +35,7 @@ public class SoapCalss extends AsyncTask<Void, Void, String> {
         mOnSoapEventListener = eventListener;
     }
 
-    public SoapCalss(String MethodName, Map<String, String> Property)
+    public SoapClass(String MethodName, Map<String, String> Property)
     {
         this.mMethodName = MethodName;
         this.mProperty = Property;
@@ -61,7 +61,7 @@ public class SoapCalss extends AsyncTask<Void, Void, String> {
                 androidHttpTransport.call(SOAP_ACTION, envelope);
                 SoapObject resultsRequestSOAP = (SoapObject) envelope.bodyIn;
                 if (resultsRequestSOAP.getPropertyCount() > 0)
-                    mOnSoapEventListener.onComplite(resultsRequestSOAP.getProperty(0).toString());
+                    mOnSoapEventListener.onComplete(resultsRequestSOAP.getProperty(0).toString());
                 else
                     mOnSoapEventListener.onError(SOAP_ERROR_NODATA);
             } catch (Exception e) {

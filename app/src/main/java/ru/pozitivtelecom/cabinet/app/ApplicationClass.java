@@ -2,15 +2,12 @@ package ru.pozitivtelecom.cabinet.app;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
 
-import java.lang.reflect.TypeVariable;
-
-import ru.pozitivtelecom.cabinet.models.UsersCabinetDataModel;
+import ru.pozitivtelecom.cabinet.models.PersonModel;
 import ru.pozitivtelecom.cabinet.ui.ForgotPasswordActivity;
 import ru.pozitivtelecom.cabinet.ui.LoginActivity;
 import ru.pozitivtelecom.cabinet.ui.SignupActivity;
@@ -21,32 +18,16 @@ public class ApplicationClass extends Application implements Application.Activit
     //Private variable
 
     //Global variable
-    public int CurrentAccount;
-    public UsersCabinetDataModel Data;
-
+    public PersonModel SessionData;
+    public int CurrentAccountID;
+    public Activity CurrentActivity;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        CurrentAccount = 0;
+        CurrentAccountID = 0;
         PreferencesClass.Preferences.InitPreferences(this);
         registerActivityLifecycleCallbacks(this);
-    }
-
-    static public UsersCabinetDataModel getAppData(Activity context) {
-        return ((ApplicationClass)context.getApplicationContext()).Data;
-    }
-
-    static public void setAppData(Activity context, UsersCabinetDataModel data) {
-        ((ApplicationClass)context.getApplicationContext()).Data = data;
-    }
-
-    static public int getCurrentAccount(Activity context) {
-        return ((ApplicationClass)context.getApplicationContext()).CurrentAccount;
-    }
-
-    static public void setCurrentAccount(Activity context, int curentAccount) {
-        ((ApplicationClass)context.getApplicationContext()).CurrentAccount = curentAccount;
     }
 
     @Override
@@ -61,43 +42,37 @@ public class ApplicationClass extends Application implements Application.Activit
                 activity.getClass() == LoginActivity.class ||
                 activity.getClass() == ForgotPasswordActivity.class ||
                 activity.getClass() == SignupActivity.class) return;
-        if (Data == null) {
+        if (SessionData == null) {
             PreferencesClass.Preferences.InitPreferences(this);
 
             if (bundle == null) {
-                startSpalshScreen();
+                startSplashScreen();
                 return;
             }
 
-            CurrentAccount = bundle.getInt("saveCurentAccount");
+            CurrentAccountID = bundle.getInt("saveCurentAccount");
 
             String SavePreference = bundle.getString("saveData", "");
             if (SavePreference == "" || SavePreference == null) {
-                startSpalshScreen();
+                startSplashScreen();
             }
             else {
                 try {
-                    Data = new Gson().fromJson(SavePreference, UsersCabinetDataModel.class);
+                    SessionData = new Gson().fromJson(SavePreference, PersonModel.class);
                 }
                 catch (Exception e) {
-                    startSpalshScreen();
+                    startSplashScreen();
                 }
             }
         }
     }
 
-    private void startSpalshScreen() {
-        Intent intent = new Intent(this, SplashScreenActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-        if (Data != null)
+        if (SessionData != null)
         {
-            bundle.putInt("saveCurentAccount", CurrentAccount);
-            bundle.putString("saveData", new Gson().toJson(Data));
+            bundle.putInt("saveCurentAccount", CurrentAccountID);
+            bundle.putString("saveData", new Gson().toJson(SessionData));
         }
     }
 
@@ -108,7 +83,7 @@ public class ApplicationClass extends Application implements Application.Activit
 
     @Override
     public void onActivityResumed(Activity activity) {
-
+        CurrentActivity = activity;
     }
 
     @Override
@@ -124,5 +99,35 @@ public class ApplicationClass extends Application implements Application.Activit
     @Override
     public void onActivityDestroyed(Activity activity) {
 
+    }
+
+    static public PersonModel getAppData(Activity context) {
+        return ((ApplicationClass)context.getApplicationContext()).SessionData;
+    }
+
+    static public void setAppData(Activity context, PersonModel data) {
+        ((ApplicationClass)context.getApplicationContext()).SessionData = data;
+    }
+
+    static public int getCurrentAccount(Activity context) {
+        return ((ApplicationClass)context.getApplicationContext()).CurrentAccountID;
+    }
+
+    static public void setCurrentAccount(Activity context, int curentAccount) {
+        ((ApplicationClass)context.getApplicationContext()).CurrentAccountID = curentAccount;
+    }
+
+    public Class getCurrentActivityClass() {
+        return CurrentActivity.getClass();
+    }
+
+    public boolean currentActivityClassIs(Class isClass) {
+        return getCurrentActivityClass() == isClass;
+    }
+
+    private void startSplashScreen() {
+        Intent intent = new Intent(this, SplashScreenActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

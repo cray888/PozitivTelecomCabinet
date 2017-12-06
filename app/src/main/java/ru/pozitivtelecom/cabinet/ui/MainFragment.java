@@ -1,9 +1,13 @@
 package ru.pozitivtelecom.cabinet.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +16,13 @@ import android.widget.TextView;
 
 import ru.pozitivtelecom.cabinet.R;
 import ru.pozitivtelecom.cabinet.app.ApplicationClass;
-import ru.pozitivtelecom.cabinet.models.AccountsDataModel;
-import ru.pozitivtelecom.cabinet.models.UsersCabinetDataModel;
+import ru.pozitivtelecom.cabinet.models.AccountsModel;
+import ru.pozitivtelecom.cabinet.models.PersonModel;
 
 public class MainFragment extends Fragment implements View.OnClickListener {
 
     private ViewGroup mView;
+    private BroadcastReceiver mMessageReceiver;
 
     public MainFragment() {}
 
@@ -29,6 +34,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        UpdateData();
     }
 
     @Override
@@ -46,28 +57,22 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         mView.findViewById(R.id.txt_history_pay).setOnClickListener(this);
         mView.findViewById(R.id.txt_feedback).setOnClickListener(this);
 
+        mMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (getActivity() != null) UpdateData();
+            }
+        };
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, new IntentFilter("UpdateMainFragmentData"));
+
         UpdateData();
         return mView;
     }
 
-    public void UpdateData() {
-        int CurentAccaunt = ApplicationClass.getCurrentAccount(getActivity());
-        UsersCabinetDataModel CabinetData = ApplicationClass.getAppData(getActivity());
-
-        TextView mAccountNumber = mView.findViewById(R.id.txt_account);
-        mAccountNumber.setText(Html.fromHtml(String.format(getString(R.string.main_fragment_account_number), CabinetData.Users.get(0).Accounts.get(CurentAccaunt).AccountNO)));
-
-        TextView mBalance = mView.findViewById(R.id.txt_balance);
-        mBalance.setText(String.format("%.2f %s", CabinetData.Users.get(0).Accounts.get(CurentAccaunt).Balance, getContext().getString(R.string.valuta)));
-
-        TextView mPeriodStart = mView.findViewById(R.id.txt_periond_start);
-        mPeriodStart.setText(CabinetData.Users.get(0).Accounts.get(CurentAccaunt).PeriodStart);
-
-        TextView mPeriodEnd = mView.findViewById(R.id.txt_periond_end);
-        mPeriodEnd.setText(CabinetData.Users.get(0).Accounts.get(CurentAccaunt).PeriodEnd);
-
-        TextView mSumNextMonth = mView.findViewById(R.id.txt_sum_next_month);
-        mSumNextMonth.setText(String.format("%.2f %s", CabinetData.Users.get(0).Accounts.get(CurentAccaunt).SummNextMonth, getContext().getString(R.string.valuta)));
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
     }
 
     @Override
@@ -75,7 +80,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         switch (view.getId())
         {
             case R.id.cardv_account:
-                OpenAccountActivity();
+                //OpenAccountActivity();
                 break;
             case R.id.cardv_internet:
                 OpenURLInBrowser(R.string.url_internet);
@@ -105,6 +110,26 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public void UpdateData() {
+        int CurentAccaunt = ApplicationClass.getCurrentAccount(getActivity());
+        PersonModel CabinetData = ApplicationClass.getAppData(getActivity());
+
+        TextView mAccountNumber = mView.findViewById(R.id.txt_account);
+        mAccountNumber.setText(Html.fromHtml(String.format(getString(R.string.main_fragment_account_number), CabinetData.Users.get(0).Accounts.get(CurentAccaunt).AccountNO)));
+
+        TextView mBalance = mView.findViewById(R.id.txt_balance);
+        mBalance.setText(String.format("%.2f %s", CabinetData.Users.get(0).Accounts.get(CurentAccaunt).Balance, getContext().getString(R.string.valuta)));
+
+        TextView mPeriodStart = mView.findViewById(R.id.txt_periond_start);
+        mPeriodStart.setText(CabinetData.Users.get(0).Accounts.get(CurentAccaunt).PeriodStart);
+
+        TextView mPeriodEnd = mView.findViewById(R.id.txt_periond_end);
+        mPeriodEnd.setText(CabinetData.Users.get(0).Accounts.get(CurentAccaunt).PeriodEnd);
+
+        TextView mSumNextMonth = mView.findViewById(R.id.txt_sum_next_month);
+        mSumNextMonth.setText(String.format("%.2f %s", CabinetData.Users.get(0).Accounts.get(CurentAccaunt).SummNextMonth, getContext().getString(R.string.valuta)));
+    }
+
     private void OpenFeedbackActivity() {
         Intent intent = new Intent(getActivity(), MessagesActivity.class);
         startActivity(intent);
@@ -115,22 +140,19 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         startActivity(intent);
     }
 
-    private void OpenURLInBrowser(int UrlResource)
-    {
+    private void OpenURLInBrowser(int UrlResource) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(UrlResource)));
         startActivity(intent);
     }
 
-    private void OpenAccountActivity()
-    {
+    private void OpenAccountActivity() {
         Intent intent = new Intent(getActivity(), AccountActivity.class);
         startActivity(intent);
     }
 
-    private void OpenPayActivity()
-    {
+    private void OpenPayActivity() {
         int mCurrentAccountID = ApplicationClass.getCurrentAccount(getActivity());
-        AccountsDataModel mAccount =  ApplicationClass.getAppData(getActivity()).Users.get(0).Accounts.get(mCurrentAccountID);
+        AccountsModel mAccount =  ApplicationClass.getAppData(getActivity()).Users.get(0).Accounts.get(mCurrentAccountID);
 
         Intent intent = new Intent(getActivity(), PayActivity.class);
         intent.putExtra("accountNO", mAccount.AccountNO);

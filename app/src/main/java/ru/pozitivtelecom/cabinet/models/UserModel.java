@@ -2,8 +2,8 @@ package ru.pozitivtelecom.cabinet.models;
 
 import java.util.List;
 
-public class UsersDataModel {
+public class UserModel {
     public String UserID;
     public String UserCode;
-    public List<AccountsDataModel> Accounts;
+    public List<AccountsModel> Accounts;
 }

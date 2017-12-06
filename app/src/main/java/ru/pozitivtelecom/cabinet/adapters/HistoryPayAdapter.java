@@ -13,15 +13,15 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.pozitivtelecom.cabinet.R;
-import ru.pozitivtelecom.cabinet.models.HistoryPayItemModel;
+import ru.pozitivtelecom.cabinet.models.HistoryPayModel;
 
 //http://stacktips.com/tutorials/android/android-recyclerview-example
 
 public class HistoryPayAdapter extends RecyclerView.Adapter<HistoryPayAdapter.CustomViewHolder> {
-    private List<HistoryPayItemModel> payItemList;
+    private List<HistoryPayModel> payItemList;
     private Context mContext;
 
-    public HistoryPayAdapter(Context context, List<HistoryPayItemModel> historyPayItemList) {
+    public HistoryPayAdapter(Context context, List<HistoryPayModel> historyPayItemList) {
         this.payItemList = historyPayItemList;
         this.mContext = context;
     }
@@ -37,7 +37,7 @@ public class HistoryPayAdapter extends RecyclerView.Adapter<HistoryPayAdapter.Cu
 
     @Override
     public void onBindViewHolder(CustomViewHolder customViewHolder, int i) {
-        HistoryPayItemModel payItem = payItemList.get(i);
+        HistoryPayModel payItem = payItemList.get(i);
 
         customViewHolder.mPayType.setVisibility(View.VISIBLE);
         switch (payItem.State) {

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FFF</color>
+
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#0288D1</color>
     <color name="colorAccent">#2196F3</color>
@@ -16,9 +18,12 @@
     <color name="vector_img_gray">#3c3f41</color>
     <color name="arrow_green">#4CAF50</color>
     <color name="arrow_red">#FF5722</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
 
     <color name="blue_swipe">@color/colorPrimary</color>
     <color name="green_swipe">#ff99cc00</color>
     <color name="red_swipe">#ffff4444</color>
     <color name="orange_swipe">#ffffbb33</color>
+
+    <color name="message_group_background">#ffffbb33</color>
 </resources>
