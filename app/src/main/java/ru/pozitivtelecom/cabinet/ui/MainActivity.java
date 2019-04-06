@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public int getStatusBarHeight() {
         int result = 0;
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
             int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
             if (resourceId > 0) {
                 result = getResources().getDimensionPixelSize(resourceId);

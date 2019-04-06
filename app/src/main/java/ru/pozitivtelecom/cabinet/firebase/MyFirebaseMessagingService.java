@@ -74,7 +74,6 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
         dispatcher.schedule(myJob);
     }
 
-
     private void handleNow() {
         Log.d(TAG, "Short lived task is done.");
     }

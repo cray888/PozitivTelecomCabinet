@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:crard_view="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                crard_view:cardBackgroundColor="@color/cardview_color">
+                card_view:cardBackgroundColor="@color/cardview_color">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -143,7 +143,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    crard_view:cardBackgroundColor="@color/cardview_color">
+                    card_view:cardBackgroundColor="@color/cardview_color">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -162,7 +162,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    crard_view:cardBackgroundColor="@color/cardview_color_alt">
+                    card_view:cardBackgroundColor="@color/cardview_color_alt">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -188,7 +188,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    crard_view:cardBackgroundColor="@color/cardview_color_alt">
+                    card_view:cardBackgroundColor="@color/cardview_color_alt">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -207,7 +207,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    crard_view:cardBackgroundColor="@color/cardview_color">
+                    card_view:cardBackgroundColor="@color/cardview_color">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -233,7 +233,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    crard_view:cardBackgroundColor="@color/cardview_color">
+                    card_view:cardBackgroundColor="@color/cardview_color">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -252,7 +252,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    crard_view:cardBackgroundColor="@color/cardview_color_alt">
+                    card_view:cardBackgroundColor="@color/cardview_color_alt">
 
                     <TextView
                         android:layout_width="match_parent"
